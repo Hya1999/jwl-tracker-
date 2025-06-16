@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWL Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { padding: 10px; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Submit to Google Sheet</h2>
+  <form id="dataForm">
+    <input type="text" id="orderId" placeholder="Order ID" required />
+    <input type="text" id="marketplace" placeholder="Marketplace" required />
+    <button type="submit">Save to Google Sheet</button>
+  </form>
+
+  <script>
+    const cloudFunctionURL = "YOUR_CLOUD_FUNCTION_URL_HERE"; // Replace with deployed URL
+
+    document.getElementById('dataForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const orderId = document.getElementById('orderId').value;
+      const marketplace = document.getElementById('marketplace').value;
+
+      const payload = {
+        "Order ID": orderId,
+        "Marketplace": marketplace
+      };
+
+      const response = await fetch(cloudFunctionURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    });
+  </script>
+</body>
+</html>
